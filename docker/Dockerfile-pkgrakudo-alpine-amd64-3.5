@@ -1,0 +1,24 @@
+FROM alpine:3.5
+MAINTAINER Claudio Ramirez <pub.claudio@gmail.com>
+
+ENV LANG C.UTF-8
+ENV TZ Europe/Brussels
+ENV packages tzdata gcc git make perl ruby-dev lsb-release
+ENV packages_tmp tzdata wget
+
+RUN set -xv ; \
+cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
+echo "${TZ}" > /etc/timezone && \
+apk update && apk upgrade && \
+# Packages for compiling and pkg creation
+apk add --no-cache ${packages} ${packages_tmp} && \
+gem install fpm && \
+# Cleanup
+apk del ${packages_tmp} && \
+rm -rf /tmp/* /var/tmp/* /MoarVM* /nqp* /rakudo*
+
+COPY pkg_rakudo.sh /
+COPY install_zef_as_user.sh /
+COPY install_zef_as_root.sh /
+
+CMD '/pkg_rakudo.sh'
