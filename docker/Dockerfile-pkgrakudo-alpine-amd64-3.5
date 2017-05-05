@@ -3,16 +3,17 @@ MAINTAINER Claudio Ramirez <pub.claudio@gmail.com>
 
 ENV LANG C.UTF-8
 ENV TZ Europe/Brussels
-ENV packages tzdata gcc git make perl ruby-dev lsb-release
-ENV packages_tmp tzdata wget
+ENV packages bash build-base ca-certificates git libc-dev linux-headers openssl perl ruby wget
+ENV packages_tmp libffi-dev ruby-dev ruby-irb ruby-rdoc tzdata 
 
 RUN set -xv ; \
-cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
-echo "${TZ}" > /etc/timezone && \
 apk update && apk upgrade && \
 # Packages for compiling and pkg creation
 apk add --no-cache ${packages} ${packages_tmp} && \
-gem install fpm && \
+update-ca-certificates && \
+cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
+echo "${TZ}" > /etc/timezone && \
+gem install fpm json && \
 # Cleanup
 apk del ${packages_tmp} && \
 rm -rf /tmp/* /var/tmp/* /MoarVM* /nqp* /rakudo*

@@ -1,4 +1,5 @@
 #!/bin/bash -e
+set -xv
 
 # Functions
 function die { 
@@ -33,6 +34,9 @@ if [ -f "/etc/debian_version" ]; then
 elif [ -f "/etc/redhat-release" ]; then 
     TARGET="rpm"
     INSTALL="rpm -Uvh"
+elif [ -f "/etc/alpine-release" ]; then 
+    TARGET="apk"
+    INSTALL="apk add --allow-untrusted"
 else
     echo "OS not yet supported."
     exit 1
@@ -56,8 +60,13 @@ rm -rf /MoarVM* /nqp* /rakudo*
 echo "Rakudo was succesfully compiled."
 
 # Packaging
-OS=$(lsb_release -is)
-RELEASE=$(lsb_release -rs)
+if [ -f /etc/alpine-release ]; then
+    OS=alpine
+    RELEASE=$(cat /etc/alpine-release)
+    else 
+        OS=$(lsb_release -is)
+        RELEASE=$(lsb_release -rs)
+fi
 BUILDDATE=$(date '+%Y%m%d_%H%M%S')
 PKGDIR="/staging/build_${BUILDDATE}"
 if [ ! -d "$PKGDIR" ]; then mkdir -p "$PKGDIR"; fi
