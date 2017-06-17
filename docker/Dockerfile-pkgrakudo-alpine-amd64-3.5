@@ -3,7 +3,7 @@ MAINTAINER Claudio Ramirez <pub.claudio@gmail.com>
 
 ENV LANG C.UTF-8
 ENV TZ Europe/Brussels
-ENV packages bash build-base ca-certificates git libc-dev linux-headers openssl perl ruby wget
+ENV packages bash build-base ca-certificates git libc-dev linux-headers openssl perl ruby wget zlib gzip
 ENV packages_tmp libffi-dev ruby-dev ruby-irb ruby-rdoc tzdata 
 
 RUN set -xv ; \
@@ -15,7 +15,7 @@ cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
 echo "${TZ}" > /etc/timezone && \
 gem install fpm json && \
 # Cleanup
-apk del ${packages_tmp} && \
+#apk del ${packages_tmp} && \
 rm -rf /tmp/* /var/tmp/* /MoarVM* /nqp* /rakudo*
 
 COPY pkg_rakudo /

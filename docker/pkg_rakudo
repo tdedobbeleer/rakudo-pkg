@@ -71,6 +71,7 @@ BUILDDATE=$(date '+%Y%m%d_%H%M%S')
 PKGDIR="/staging/build_${BUILDDATE}"
 if [ ! -d "$PKGDIR" ]; then mkdir -p "$PKGDIR"; fi
 fpm \
+--debug \
 --deb-no-default-config-files \
 --license "Artistic License 2.0" \
 --description "Rakudo is a compiler for the Perl 6 programming language" \
