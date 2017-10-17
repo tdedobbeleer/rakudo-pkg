@@ -75,7 +75,7 @@ fpm \
 --deb-no-default-config-files \
 --license "Artistic License 2.0" \
 --description "Rakudo is a compiler for the Perl 6 programming language" \
--a native \
+-a x86_64 \
 -s dir \
 -t $TARGET \
 -p $PKGDIR \
